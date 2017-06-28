@@ -14,9 +14,8 @@ const reducer = combineReducers({
   microcastle: Microcastle.MicrocastleStore.reducer,
 });
 
-const handleNew = (value) => {
-//  console.log('handled edit', type, value);
-  return Promise.resolve({'id': value});
+const handleNew = (type) => {
+  return Promise.resolve({'id': type});
 }
 
 
@@ -66,6 +65,46 @@ class MessageItem extends Component {
   }
 }
 
+class ButtonBar extends Component {
+  render(){
+    return(
+      <div className="buttonsBar">
+        <div 
+            className="buttonItem"
+            onClick={this.props.onCreateClicked}
+          >
+          <Microcastle.Button.Create 
+          visible={!this.props.sendVisible}
+          schema='text'
+          text="New Message"
+          />
+        </div>
+        <div  
+          className="buttonItem"
+          onClick={this.props.onPublishClicked}>
+          <Microcastle.Button.Base
+            text="Publish Comment"
+            visible={this.props.sendVisible}	
+            onClick={()=>{
+              messages.push(this.props.newMessage)
+            }}
+          />
+        </div> 
+        <div
+          className="buttonItem"
+        >       
+          <Microcastle.Button.EditEntry
+            text="Edit Comment"
+            visible={this.props.sendVisible}
+            schema="text"
+            entry="id"
+          />
+        </div>
+      </div>
+    )
+  }
+}
+
 class CommentBox extends Component {
     constructor(props){
     super(props)
@@ -96,7 +135,7 @@ class CommentBox extends Component {
     return (
     <div className="container">
       <h1>AWESOME COMMENT BOX</h1>
-      {messages}
+      {messages.length === 0 ? <h5>No comments published yet</h5> : messages}
       <div>
         <h6>{this.state.dataText}</h6>
         {this.state.dataText !== '' && 
@@ -107,32 +146,22 @@ class CommentBox extends Component {
         />
         }
       </div>
-      <div className="buttonsBar">
-        <div onClick={() => 
-            this.setState({
-              sendVisible: !this.state.sendVisible,
-              dataText: 'Comment waiting for publication. Check details and Click on <Send Message> button',
-            })}
-          >
-          <Microcastle.Button.Create 
-          visible={!this.state.sendVisible}
-          schema='text'
-          text="New Message"
-          />
-        </div>
-        <div  onClick={() => this.setState({
+      <ButtonBar 
+        onCreateClicked={() => 
+          this.setState({
+            sendVisible: !this.state.sendVisible,
+            dataText: 'Comment waiting for publication. Check details and Click on <Send Message> button',
+          })
+        }
+        onPublishClicked={() => 
+          this.setState({
             sendVisible: !this.state.sendVisible,
             dataText: 'Last sent comment',           
-          })}>
-          <Microcastle.Button.Base
-          text="Send Message"
-          visible={this.state.sendVisible}	
-          onClick={()=>{
-            messages.push(newMessage)
-          }}
-        />
-        </div>     
-      </div>
+          })
+        }
+        newMessage={newMessage}
+        sendVisible={this.state.sendVisible}
+      />
     </div>
     );
   }

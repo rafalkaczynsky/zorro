@@ -25,5 +25,9 @@ h1 {
 }
 
 .buttonsBar {
-  border: 1px solid lightgray;
+  padding: 10px;
+}
+
+.buttonItem {
+  display: inline-block;
 }
