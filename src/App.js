@@ -5,7 +5,8 @@ import I from 'immutable';
 import Microcastle from 'microcastle';
 import thunk from 'redux-thunk';
 
-import { Button } from 'react-bootstrap';
+import './index.css'
+import { Panel } from 'react-bootstrap';
 
 var messages = [];
 
@@ -56,11 +57,11 @@ const store = createStore(reducer, {
 class MessageItem extends Component {
   render(){
     return(
-      <div>
-        <h2>Title: {this.props.title}</h2>
-        <p>Message:{this.props.content}</p>
-        <h5>User Name: {this.props.userName}</h5>
-      </div>
+          <div className="messageContainer">
+            <h2>Title: {this.props.title}</h2>
+            <p>Message:{this.props.content}</p>
+            <h5>User Name: {this.props.userName}</h5>
+          </div>
     )
   }
 }
@@ -93,31 +94,9 @@ class CommentBox extends Component {
     )
 
     return (
-    <div>
+    <div className="container">
       <h1>AWESOME COMMENT BOX</h1>
       {messages}
-      <div onClick={() => this.setState({
-          sendVisible: !this.state.sendVisible,
-          dataText: 'Comment waiting for publication. Check details and Click on <Send Message> button',
-        })}>
-        <Microcastle.Button.Create 
-          visible={!this.state.sendVisible}
-          schema='text'
-          text="New Message"
-        />
-      </div>
-      <div onClick={() => this.setState({
-            sendVisible: !this.state.sendVisible,
-            dataText: 'Last sent comment',           
-          })}>
-        <Microcastle.Button.Base
-         text="Send Message"
-         visible={this.state.sendVisible}	
-         onClick={()=>{
-           messages.push(newMessage)
-         }}
-       />
-      </div>
       <div>
         <h6>{this.state.dataText}</h6>
         {this.state.dataText !== '' && 
@@ -128,13 +107,38 @@ class CommentBox extends Component {
         />
         }
       </div>
-
+      <div className="buttonsBar">
+        <div onClick={() => 
+            this.setState({
+              sendVisible: !this.state.sendVisible,
+              dataText: 'Comment waiting for publication. Check details and Click on <Send Message> button',
+            })}
+          >
+          <Microcastle.Button.Create 
+          visible={!this.state.sendVisible}
+          schema='text'
+          text="New Message"
+          />
+        </div>
+        <div  onClick={() => this.setState({
+            sendVisible: !this.state.sendVisible,
+            dataText: 'Last sent comment',           
+          })}>
+          <Microcastle.Button.Base
+          text="Send Message"
+          visible={this.state.sendVisible}	
+          onClick={()=>{
+            messages.push(newMessage)
+          }}
+        />
+        </div>     
+      </div>
     </div>
     );
   }
 }
 
-const SomeText = Microcastle.MicrocastleConnect(["text"])(CommentBox);
+const Container = Microcastle.MicrocastleConnect(["text"])(CommentBox);
 
 class App extends Component {
   render() {
@@ -142,7 +146,7 @@ class App extends Component {
       <Provider store={store}>
         <div>
           <Microcastle.MicrocastleEditor schemas={schemas} />
-          <SomeText />
+          <Container />
         </div>
       </Provider>
     );
