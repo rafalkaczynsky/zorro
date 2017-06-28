@@ -6,7 +6,7 @@ import Microcastle from 'microcastle';
 import thunk from 'redux-thunk';
 
 import './index.css'
-import { Panel } from 'react-bootstrap';
+import {ButtonBar, MessageItem} from './components'
 
 var messages = [];
 
@@ -53,57 +53,9 @@ const store = createStore(reducer, {
   applyMiddleware(thunk)
 ));
 
-class MessageItem extends Component {
-  render(){
-    return(
-          <div className="messageContainer">
-            <h2>Title: {this.props.title}</h2>
-            <p>Message:{this.props.content}</p>
-            <h5>User Name: {this.props.userName}</h5>
-          </div>
-    )
-  }
-}
 
-class ButtonBar extends Component {
-  render(){
-    return(
-      <div className="buttonsBar">
-        <div 
-            className="buttonItem"
-            onClick={this.props.onCreateClicked}
-          >
-          <Microcastle.Button.Create 
-          visible={!this.props.sendVisible}
-          schema='text'
-          text="New Message"
-          />
-        </div>
-        <div  
-          className="buttonItem"
-          onClick={this.props.onPublishClicked}>
-          <Microcastle.Button.Base
-            text="Publish Comment"
-            visible={this.props.sendVisible}	
-            onClick={()=>{
-              messages.push(this.props.newMessage)
-            }}
-          />
-        </div> 
-        <div
-          className="buttonItem"
-        >       
-          <Microcastle.Button.EditEntry
-            text="Edit Comment"
-            visible={this.props.sendVisible}
-            schema="text"
-            entry="id"
-          />
-        </div>
-      </div>
-    )
-  }
-}
+
+
 
 class CommentBox extends Component {
     constructor(props){
@@ -159,8 +111,10 @@ class CommentBox extends Component {
             dataText: 'Last sent comment',           
           })
         }
-        newMessage={newMessage}
         sendVisible={this.state.sendVisible}
+        handleMessagePush={()=>{
+          messages.push(newMessage)
+        }}
       />
     </div>
     );
