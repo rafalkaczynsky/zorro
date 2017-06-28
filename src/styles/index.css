@@ -31,3 +31,41 @@ h1 {
 .buttonItem {
   display: inline-block;
 }
+
+.imageContainer{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+
+}
+
+.detailsContainer{
+  vertical-align: top;
+  display: inline-block;
+  height: 100%;
+  margin: 30px 30px;
+}
+
+.userName{
+  color: grey;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.time{
+  color: lightGrey;
+  font-size: 10px;
+}
+
+.black{
+  font-size: 18px;
+  color: black;
+}
+
+.message{
+  padding: 10px 30px;
+  font-style: italic;
+  color: grey;
+}

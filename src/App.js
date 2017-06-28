@@ -5,10 +5,8 @@ import I from 'immutable';
 import Microcastle from 'microcastle';
 import thunk from 'redux-thunk';
 
-import './index.css'
-import {ButtonBar, MessageItem} from './components'
-
-var messages = [];
+import './styles/index.css'
+import {CommentBox} from './components'
 
 const reducer = combineReducers({
   microcastle: Microcastle.MicrocastleStore.reducer,
@@ -53,73 +51,6 @@ const store = createStore(reducer, {
   applyMiddleware(thunk)
 ));
 
-
-
-
-
-class CommentBox extends Component {
-    constructor(props){
-    super(props)
-
-    this.state = {
-      sendVisible: false,
-      dataText: '',
-    }
-  }
-  render() {
-
-    let title;
-    let content;
-    let userName;
-
-    title = this.props.mcGetAttribute('text', 'id', 'title');
-    content = this.props.mcGetAttribute('text', 'id', 'content');  
-    userName = this.props.mcGetAttribute('text', 'id', 'userName'); 
-
-    let newMessage = (
-      <MessageItem
-        title={title}
-        content={content}
-        userName={userName}
-      />
-    )
-
-    return (
-    <div className="container">
-      <h1>AWESOME COMMENT BOX</h1>
-      {messages.length === 0 ? <h5>No comments published yet</h5> : messages}
-      <div>
-        <h6>{this.state.dataText}</h6>
-        {this.state.dataText !== '' && 
-        <MessageItem
-          title={title}
-          content={content}
-          userName={userName}
-        />
-        }
-      </div>
-      <ButtonBar 
-        onCreateClicked={() => 
-          this.setState({
-            sendVisible: !this.state.sendVisible,
-            dataText: 'Comment waiting for publication. Check details and Click on <Send Message> button',
-          })
-        }
-        onPublishClicked={() => 
-          this.setState({
-            sendVisible: !this.state.sendVisible,
-            dataText: 'Last sent comment',           
-          })
-        }
-        sendVisible={this.state.sendVisible}
-        handleMessagePush={()=>{
-          messages.push(newMessage)
-        }}
-      />
-    </div>
-    );
-  }
-}
 
 const Container = Microcastle.MicrocastleConnect(["text"])(CommentBox);
 
